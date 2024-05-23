@@ -1,0 +1,11 @@
+Performance Testing of Quicksort Optimization Techniques:
+Original Array:
+10 7 8 9 1 5 
+Time taken by basic quicksort: 6891 nanoseconds
+1 5 7 8 9 10 
+Time taken by firstElement quicksort: 14730 nanoseconds
+1 5 7 8 9 10 
+Time taken by random quicksort: 669560 nanoseconds
+1 5 7 8 9 10 
+
+=== Code Execution Successful ===

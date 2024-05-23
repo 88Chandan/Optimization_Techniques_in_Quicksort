@@ -1,0 +1,127 @@
+public class QuicksortOptimizationProject {
+    
+    // Basic quicksort implementation
+    public static void quickSort(int[] arr, int low, int high) {
+        if (low < high) {
+            int pivotIndex = partition(arr, low, high);
+            quickSort(arr, low, pivotIndex - 1);
+            quickSort(arr, pivotIndex + 1, high);
+        }
+    }
+    
+    // Partitioning method for quicksort
+    private static int partition(int[] arr, int low, int high) {
+        int pivot = arr[high];
+        int i = low - 1;
+        
+        for (int j = low; j < high; j++) {
+            if (arr[j] <= pivot) {
+                i++;
+                swap(arr, i, j);
+            }
+        }
+        
+        swap(arr, i + 1, high);
+        return i + 1;
+    }
+    
+    // Swap helper method
+    private static void swap(int[] arr, int i, int j) {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+    
+    // Optimized quicksort with different techniques
+    public static void optimizedQuickSort(int[] arr, int low, int high, String technique) {
+        if (low < high) {
+            int pivotIndex = 0;
+            switch (technique) {
+                case "firstElement":
+                    pivotIndex = partitionFirstElement(arr, low, high);
+                    break;
+                case "random":
+                    pivotIndex = partitionRandom(arr, low, high);
+                    break;
+                // Add more cases for other techniques as needed
+                default:
+                    pivotIndex = partition(arr, low, high);
+                    break;
+            }
+            
+            optimizedQuickSort(arr, low, pivotIndex - 1, technique);
+            optimizedQuickSort(arr, pivotIndex + 1, high, technique);
+        }
+    }
+    
+    // Partitioning methods for different optimization techniques
+  private static int partitionFirstElement(int[] arr, int low, int high) {
+    int pivot = arr[low]; // Use first element as pivot
+    int i = low; // Initialize i without subtracting 1
+    
+    for (int j = low + 1; j <= high; j++) { // Adjust loop condition to include high
+        if (arr[j] <= pivot) {
+            i++;
+            swap(arr, i, j);
+        }
+    }
+    
+    swap(arr, i, low); // Swap pivot into its correct position
+    return i;
+}
+
+    
+    private static int partitionRandom(int[] arr, int low, int high) {
+        int randomIndex = low + (int) (Math.random() * (high - low + 1));
+        swap(arr, randomIndex, high);
+        return partition(arr, low, high);
+    }
+    
+    // Performance testing with different datasets
+    public static void performanceTest(int[] arr) {
+        System.out.println("Original Array:");
+        printArray(arr);
+        
+        // Test basic quicksort
+        long startTime = System.nanoTime();
+        quickSort(arr, 0, arr.length - 1);
+        long endTime = System.nanoTime();
+        long duration = (endTime - startTime);
+        System.out.println("Time taken by basic quicksort: " + duration + " nanoseconds");
+        printArray(arr);
+        
+        // Test optimized quicksort with different techniques
+        int[] arrCopy = arr.clone(); // Copy original array for fair comparison
+        
+        String[] techniques = {"firstElement", "random"}; // Add more techniques as needed
+        
+        for (String technique : techniques) {
+            startTime = System.nanoTime();
+            optimizedQuickSort(arrCopy, 0, arrCopy.length - 1, technique);
+            endTime = System.nanoTime();
+            duration = (endTime - startTime);
+            System.out.println("Time taken by " + technique + " quicksort: " + duration + " nanoseconds");
+            printArray(arrCopy);
+            
+            // Reset array for next technique
+            arrCopy = arr.clone();
+        }
+    }
+    
+    // Method to print array elements
+    private static void printArray(int[] arr) {
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+    }
+    
+    // Main method to demonstrate the project outline
+    public static void main(String[] args) {
+        // Example array for testing
+        int[] arr = {10, 7, 8, 9, 1, 5};
+        
+        System.out.println("Performance Testing of Quicksort Optimization Techniques:");
+        performanceTest(arr);
+    }
+}
